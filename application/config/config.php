@@ -2,100 +2,138 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
-| -------------------------------------------------------------------
-| DATABASE CONNECTIVITY SETTINGS
-| -------------------------------------------------------------------
-| This file will contain the settings needed to access your database.
+|--------------------------------------------------------------------------
+| Base Site URL
+|--------------------------------------------------------------------------
 |
-| For complete instructions please consult the 'Database Connection'
-| page of the User Guide.
+| URL to your CodeIgniter root. Typically this will be your base URL,
+| WITH a trailing slash:
 |
-| -------------------------------------------------------------------
-| EXPLANATION OF VARIABLES
-| -------------------------------------------------------------------
+|	http://example.com/
 |
-|	['dsn']      The full DSN string describe a connection to the database.
-|	['hostname'] The hostname of your database server.
-|	['username'] The username used to connect to the database
-|	['password'] The password used to connect to the database
-|	['database'] The name of the database you want to connect to
-|	['dbdriver'] The database driver. e.g.: mysqli.
-|			Currently supported:
-|				 cubrid, ibase, mssql, mysql, mysqli, oci8,
-|				 odbc, pdo, postgre, sqlite, sqlite3, sqlsrv
-|	['dbprefix'] You can add an optional prefix, which will be added
-|				 to the table name when using the  Query Builder class
-|	['pconnect'] TRUE/FALSE - Whether to use a persistent connection
-|	['db_debug'] TRUE/FALSE - Whether database errors should be displayed.
-|	['cache_on'] TRUE/FALSE - Enables/disables query caching
-|	['cachedir'] The path to the folder where cache files should be stored
-|	['char_set'] The character set used in communicating with the database
-|	['dbcollat'] The character collation used in communicating with the database
-|				 NOTE: For MySQL and MySQLi databases, this setting is only used
-| 				 as a backup if your server is running PHP < 5.2.3 or MySQL < 5.0.7
-|				 (and in table creation queries made with DB Forge).
-| 				 There is an incompatibility in PHP with mysql_real_escape_string() which
-| 				 can make your site vulnerable to SQL injection if you are using a
-| 				 multi-byte character set and are running versions lower than these.
-| 				 Sites using Latin-1 or UTF-8 database character set and collation are unaffected.
-|	['swap_pre'] A default table prefix that should be swapped with the dbprefix
-|	['encrypt']  Whether or not to use an encrypted connection.
+| WARNING: You MUST set this value!
 |
-|			'mysql' (deprecated), 'sqlsrv' and 'pdo/sqlsrv' drivers accept TRUE/FALSE
-|			'mysqli' and 'pdo/mysql' drivers accept an array with the following options:
+| If it is not set, then CodeIgniter will try guess the protocol and path
+| your installation, but due to security concerns the hostname will be set
+| to $_SERVER['SERVER_ADDR'] if available, or localhost otherwise.
+| The auto-detection mechanism exists only for convenience during
+| development and MUST NOT be used in production!
 |
-|				'ssl_key'    - Path to the private key file
-|				'ssl_cert'   - Path to the public key certificate file
-|				'ssl_ca'     - Path to the certificate authority file
-|				'ssl_capath' - Path to a directory containing trusted CA certificats in PEM format
-|				'ssl_cipher' - List of *allowed* ciphers to be used for the encryption, separated by colons (':')
-|				'ssl_verify' - TRUE/FALSE; Whether verify the server certificate or not ('mysqli' only)
+| If you need to allow multiple domains, remember that this file is still
+| a PHP script and you can easily do that on your own.
 |
-|	['compress'] Whether or not to use client compression (MySQL only)
-|	['stricton'] TRUE/FALSE - forces 'Strict Mode' connections
-|							- good for ensuring strict SQL while developing
-|	['ssl_options']	Used to set various SSL options that can be used when making SSL connections.
-|	['failover'] array - A array with 0 or more data for connections if the main should fail.
-|	['save_queries'] TRUE/FALSE - Whether to "save" all executed queries.
-| 				NOTE: Disabling this will also effectively disable both
-| 				$this->db->last_query() and profiling of DB queries.
-| 				When you run a query, with this setting set to TRUE (default),
-| 				CodeIgniter will store the SQL statement for debugging purposes.
-| 				However, this may cause high memory usage, especially if you run
-| 				a lot of SQL queries ... disable this to avoid that problem.
-|
-| The $active_group variable lets you choose which connection group to
-| make active.  By default there is only one group (the 'default' group).
-|
-| The $query_builder variables lets you determine whether or not to load
-| the query builder class.
 */
-$active_group = 'default';
-$query_builder = TRUE;
+$config['base_url'] = 'https://autobuild.osora.ru/';
+$config['block_ip'] = '';
+$config['proxy'] = '';
 
-$db['default'] = array(
-	'port' => 3307,
-	'dsn'	=> '',
-	'localhost' => 'localhost',
-	'username' => 'root',
-	'password' => 'QDQDQD123123aa!!',
-	'database' => 'crm_10actual',
-	'dbdriver' => 'mysqli',
-	'dbprefix' => '',
-	'pconnect' => FALSE,
-	'db_debug' => (ENVIRONMENT !== 'production'),
-	'cache_on' => FALSE,
-	'cachedir' => '',
-	'char_set' => 'utf8',
-	'dbcollat' => 'utf8_general_ci',
-	'swap_pre' => '',
-	'encrypt' => FALSE,
-	'compress' => FALSE,
-	'stricton' => FALSE,
-	'failover' => array(),
-	'save_queries' => TRUE
+$config['min_top'] = 0.80;
+
+// Разделение бюджета в процентах
+$config['percent'] = array(
+	'techical_writer' => 0.99,
+	'team_lead' => 0.98,
+	'ttchecker' => 0.97,
 );
 
+$config['summary_excluded_projects'] = array(876, 1232);
+$config['telegram_bot_token'] = '';
+
+/*
+$config['discord_token'] = 'NDI5MTQ4NzcyNzgyODMzNjc1.DZ-Edg.ZziRXovzYnLtC6jvfkISbqA_Zyg';
+$config['discord_channel_id'] = 428875962088947716;
+$config['discord_guild_id'] = 428875962088947714;
+*/
+
+/*
+|--------------------------------------------------------------------------
+| Index File
+|--------------------------------------------------------------------------
+|
+| Typically this will be your index.php file, unless you've renamed it to
+| something else. If you are using mod_rewrite to remove the page set this
+| variable so that it is blank.
+|
+*/
+$config['index_page'] = '';
+
+/*
+|--------------------------------------------------------------------------
+| URI PROTOCOL
+|--------------------------------------------------------------------------
+|
+| This item determines which server global should be used to retrieve the
+| URI string.  The default setting of 'REQUEST_URI' works for most servers.
+| If your links do not seem to work, try one of the other delicious flavors:
+|
+| 'REQUEST_URI'    Uses $_SERVER['REQUEST_URI']
+| 'QUERY_STRING'   Uses $_SERVER['QUERY_STRING']
+| 'PATH_INFO'      Uses $_SERVER['PATH_INFO']
+|
+| WARNING: If you set this to 'PATH_INFO', URIs will always be URL-decoded!
+*/
+$config['uri_protocol']	= 'REQUEST_URI';
+
+/*
+|--------------------------------------------------------------------------
+| URL suffix
+|--------------------------------------------------------------------------
+|
+| This option allows you to add a suffix to all URLs generated by CodeIgniter.
+| For more information please see the user guide:
+|
+| https://codeigniter.com/user_guide/general/urls.html
+*/
+$config['url_suffix'] = '';
+
+/*
+|--------------------------------------------------------------------------
+| Default Language
+|--------------------------------------------------------------------------
+|
+| This determines which set of language files should be used. Make sure
+| there is an available translation if you intend to use something other
+| than english.
+|
+*/
+$config['language']	= 'english';
+
+/*
+|--------------------------------------------------------------------------
+| Default Character Set
+|--------------------------------------------------------------------------
+|
+| This determines which character set is used by default in various methods
+| that require a character set to be provided.
+|
+| See http://php.net/htmlspecialchars for a list of supported charsets.
+|
+*/
+$config['charset'] = 'UTF-8';
+
+/*
+|--------------------------------------------------------------------------
+| Enable/Disable System Hooks
+|--------------------------------------------------------------------------
+|
+| If you would like to use the 'hooks' feature you must enable it by
+| setting this variable to TRUE (boolean).  See the user guide for details.
+|
+*/
+$config['enable_hooks'] = FALSE;
+
+/*
+|--------------------------------------------------------------------------
+| Class Extension Prefix
+|--------------------------------------------------------------------------
+|
+| This item allows you to set the filename/classname prefix when extending
+| native libraries.  For more information please see the user guide:
+|
+| https://codeigniter.com/user_guide/general/core_classes.html
+| https://codeigniter.com/user_guide/general/creating_libraries.html
+|
+*/
 $config['subclass_prefix'] = 'MY_';
 
 /*
@@ -497,5 +535,5 @@ $config['rewrite_short_tags'] = TRUE;
 */
 $config['proxy_ips'] = '';
 $config['socket_server'] = 'wss://wss8103.osora.ru';
-$config['socket_port'] = '443';
+$config['socket_port'] = 443;
 $config['socket_server_port'] = '8103';

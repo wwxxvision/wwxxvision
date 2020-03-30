@@ -16,7 +16,7 @@ const config = {
   }
 }
 
-console.log(`\x1b[31m ==== AUTO CONFIG CRM ==== ` )
+console.log(`\x1b[31m ==== AUTO CONFIG CRM ==== `)
 
 const CURENT_DERICTORY = path.basename(process.cwd());
 
@@ -42,7 +42,8 @@ const pathes = [
 
 
 pathes.forEach((path) => {
-  let file = fs.readFileSync(path.url, 'utf-8');
+  let file = fs.readFileSync(path.url, 'utf-8'),
+    isDampingBD = false;
 
   switch (path.name) {
     case 'PATH_DB_CONFIG':
@@ -65,7 +66,7 @@ pathes.forEach((path) => {
       else {
         file = file.replace(hasPort[0], `'port' => ${config.DATABASE.port},`);
       }
-      
+
       rl.question('Need run: php index.php Seed run ? (true|false): \t', (answer) => {
         answer = answer.toUpperCase();
 
@@ -78,8 +79,9 @@ pathes.forEach((path) => {
               if (stdout) {
                 console.log(`RESULT: ${stdout}`);
               }
-
+              isDampingBD = true;
               seedRunPhp.kill();
+              rl.close();
               return;
             });
           }
@@ -89,19 +91,20 @@ pathes.forEach((path) => {
           console.log('============================ \n Your answer must be true or false ');
         }
 
-        rl.close();
       })
       break;
     case 'PATH_APP_CONFIG':
-      let baseUrl = file.match(/\$config\['base_url'\].*/gm),
-        serverPort = file.match(/\$config\['socket_server_port'\].*/gm),
-        socket = file.match(/\$config\['socket_server'\].*/gm),
-        socketPort = file.match(/\$config\['socket_port'\].*/gm);
+      if (isDampingBD) {
+        let baseUrl = file.match(/\$config\['base_url'\].*/gm),
+          serverPort = file.match(/\$config\['socket_server_port'\].*/gm),
+          socket = file.match(/\$config\['socket_server'\].*/gm),
+          socketPort = file.match(/\$config\['socket_port'\].*/gm);
 
-      file = file.replace(baseUrl[0], `$config['base_url'] = 'https://${CURENT_DERICTORY}.osora.ru/';`);
-      file = file.replace(serverPort[0], `$config['socket_server_port'] = '${config.SOCKET.serverPort}';`);
-      file = file.replace(socket[0], `$config['socket_server'] = 'wss://wss${config.SOCKET.serverPort}.osora.ru';`);
-      file = file.replace(socketPort[0], `$config['socket_port'] = ${config.SOCKET.port};`);
+        file = file.replace(baseUrl[0], `$config['base_url'] = 'https://${CURENT_DERICTORY}.osora.ru/';`);
+        file = file.replace(serverPort[0], `$config['socket_server_port'] = '${config.SOCKET.serverPort}';`);
+        file = file.replace(socket[0], `$config['socket_server'] = 'wss://wss${config.SOCKET.serverPort}.osora.ru';`);
+        file = file.replace(socketPort[0], `$config['socket_port'] = '${config.SOCKET.port}';`);
+      }
       break;
     case 'PATH_SYSTEM_DRIVER':
       let repairing = file.match(/\$this->hostname\[0\] === '\/'/gm);
